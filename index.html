@@ -1,26 +1,52 @@
 <html>
   <head>
     <meta charset="utf-8" />
+    <meta name="theme-color" content="#ffc623">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="icon" type="image/png" href="/images/touch/favicon-32-32.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/touch/favicon-32-32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/touch/favicon-16-16.png">
     <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
     <meta content="utf-8" http-equiv="encoding">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
     <link rel="stylesheet" href="/main.css" />
-    <title>Notes</title>    
+    <title>Notes</title>
   </head>
   <body>
-    <nav>
-    </nav>
-
+    <nav class="main">Notes</nav>
     <section class="board">
-      <input class="new-note" type="text" placeholder="New note">
-      <div class="note">
-        <p contenteditable="true">Text here</p>
-        <div class="options" onclick="alert('bye')">Remove</div>
-      </div>
-      <div class="note">
-        <p contenteditable="true">Segunda nota tomada con mucho texto loco here</p>
-        <div class="options" onclick="alert('bye')">Remove</div>
-      </div>
+      <input class="new-note" type="text" placeholder="Write note...">
     </section>
+<script>
+// Loading data
+
+// Notes array
+var notes = ['hola loco, esta es una nota', 'esta es otra nota y no me gusta nada', 'Que pasa si agrego html<br>weiba!']
+
+// Template
+var template = '<p contenteditable="true" spellcheck="false">{{ note_content }}</p>';
+
+
+// Creating the html for the notes
+for (i = 0; i < notes.length; i++) {
+  var wrapper = document.createElement('div');
+  wrapper.className = "note";
+  wrapper.innerHTML = template.replace('{{ note_content }}', notes[i]);
+
+  // Adding the notes to the board
+  var board = document.querySelector(".board");
+  console.log(board);
+  board.appendChild(wrapper);
+}
+
+
+
+// Saving data
+
+// Removing note
+
+// Creating note
+
+</script>
   </body>
 </html>
