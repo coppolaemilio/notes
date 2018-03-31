@@ -11,6 +11,8 @@ function createNote(text) {
   // Element
   var wrapper = document.createElement('div');
   wrapper.className = "note";
+  text = text.replace('<div>', '');
+  text = text.replace('</div>', '');
   wrapper.innerHTML = template.replace('{{ note_content }}', text);
   return wrapper;
 }
@@ -18,7 +20,7 @@ function createNote(text) {
 // Loading data
 var notes = [];
 if (localStorage.getItem('notesData') !== null) {
-  var notes = localStorage.getItem('notesData').split('{/}'); 
+  var notes = JSON.parse(localStorage.getItem('notesData'));
 }
 
 // Creating the html for the notes
@@ -34,14 +36,14 @@ for (i = 0; i < notes.length; i++) {
 
 // Saving data
 setInterval(function() {
-  var notesData = '';
+  var notesData = [];
   var divs = document.querySelectorAll("div.note");
   for (var i = 0; i < divs.length; i++) {
     var currentDiv = divs[i];
-    notesData = currentDiv.firstChild.innerHTML + '{/}' + notesData;
+    notesData.unshift(currentDiv.firstChild.innerHTML)
   }
   console.log(notesData);
-  localStorage.setItem('notesData', notesData);
+  localStorage.setItem('notesData', JSON.stringify(notesData));
 }, 1000);
 
 
