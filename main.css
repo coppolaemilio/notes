@@ -25,6 +25,13 @@ nav.main {
   font-size: 20px;
 }
 
+nav.main .material-icons {
+  position: absolute;
+  left: 10px;
+  top: 14px;
+  opacity: 0;
+}
+
 .container {
   width: 100%;
   padding: 0 10px;

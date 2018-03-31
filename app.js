@@ -20,7 +20,13 @@ function createNote(text) {
 // Loading data
 var notes = [];
 if (localStorage.getItem('notesData') !== null) {
-  var notes = JSON.parse(localStorage.getItem('notesData'));
+  try {
+    var notes = JSON.parse(localStorage.getItem('notesData'));
+  }
+  catch(err) {
+    alert('Data corrupted.');
+    var notes = [];
+  }
 }
 
 // Creating the html for the notes
