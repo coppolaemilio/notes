@@ -37,7 +37,10 @@ function createNote(text) {
 }
 
 // Loading data
-var notes = localStorage.getItem('notesData').split('{/}');
+var notes = [];
+if (localStorage.getItem('notesData') !== undefined) {
+  var notes = localStorage.getItem('notesData').split('{/}'); 
+}
 
 // Creating the html for the notes
 for (i = 0; i < notes.length; i++) {
