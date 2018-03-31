@@ -38,7 +38,7 @@ function createNote(text) {
 
 // Loading data
 var notes = [];
-if (localStorage.getItem('notesData') !== undefined) {
+if (localStorage.getItem('notesData') !== null) {
   var notes = localStorage.getItem('notesData').split('{/}'); 
 }
 
