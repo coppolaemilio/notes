@@ -4,6 +4,28 @@ function stripHtml(html) {
   tmp.innerHTML = html;
   return tmp.textContent || tmp.innerText || "";
 }
+function randId() {
+  return Math.random().toString(36).replace(/[^a-z]+/g, '').substr(2, 10);
+}
+function placeCaretAtEnd(el) {
+  //https://stackoverflow.com/questions/4233265/contenteditable-set-caret-at-the-end-of-the-text-cross-browser
+  el.focus();
+  if (typeof window.getSelection != "undefined"
+          && typeof document.createRange != "undefined") {
+      var range = document.createRange();
+      range.selectNodeContents(el);
+      range.collapse(false);
+      var sel = window.getSelection();
+      sel.removeAllRanges();
+      sel.addRange(range);
+  } else if (typeof document.body.createTextRange != "undefined") {
+      var textRange = document.body.createTextRange();
+      textRange.moveToElementText(el);
+      textRange.collapse(false);
+      textRange.select();
+  }
+}
+
 
 function createNote(text) {
   // Template
@@ -83,9 +105,14 @@ function keyup(event){
   // Creating note
   var newNoteInput = document.querySelector('.new-note');
   if (newNoteInput.value != '') {
+    var randomClass = randId();
     var note = createNote(newNoteInput.value);
+    note.className += ' ' + randomClass;
     var board = document.querySelector(".board");
     newNoteInput.value = '';
     board.insertBefore(note, board.firstChild);
+
+    var element = document.querySelector('.' + randomClass + ' p');
+    placeCaretAtEnd(element);
   }
 }
