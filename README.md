@@ -9,6 +9,6 @@ Still a lot of things to do but it is super cool to see it in action.
 - Show "add to home screen" button if visiting from a browser
 - Close menu on blur
 - Order notes
-- sync notes
+- Sync notes
 - Search notes
 - Return error if exceeding the localstorage limit

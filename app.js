@@ -88,7 +88,7 @@ function checkAndDeleteEmptyNotes(){
     var currentDiv = divs[i];
     var parsedText = stripHtml(currentDiv.firstChild.innerHTML);
 
-    if (parsedText == '') {
+    if (parsedText === '' || parsedText === '<br>' ) {
       if (currentDiv.firstChild !== document.activeElement) {
         currentDiv.parentElement.removeChild(currentDiv);
       }
