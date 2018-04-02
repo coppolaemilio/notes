@@ -52,17 +52,23 @@ if (localStorage.getItem('notesData') !== null) {
 }
 
 // Creating the html for the notes
-for (i = 0; i < notes.length; i++) {
-  if (notes[i] !== '') {
-    var note = createNote(notes[i]);
-    
-    // Adding the notes to the board
-    var board = document.querySelector(".board");
-    board.insertBefore(note, board.firstChild);
+function notesToBoard(){
+  for (i = 0; i < notes.length; i++) {
+    if (notes[i] !== '') {
+      var note = createNote(notes[i]);
+      
+      // Adding the notes to the board
+      var board = document.querySelector(".board");
+      board.insertBefore(note, board.firstChild);
+    }
   }
 }
+// Adding them on load
+notesToBoard();
+
 
 // Saving data
+var savedData = [];
 setInterval(function() {
   var notesData = [];
   var divs = document.querySelectorAll("div.note");
@@ -71,6 +77,7 @@ setInterval(function() {
     notesData.unshift(currentDiv.firstChild.innerHTML)
   }
   //console.log(notesData);
+  savedData = notesData;
   localStorage.setItem('notesData', JSON.stringify(notesData));
 }, 1000);
 
@@ -126,10 +133,19 @@ menuIcon.addEventListener("click", function() {
 
 var saveButton = document.querySelector('.backup-menu .save');
 saveButton.addEventListener("click", function() {
-  alert('save');
+  alert(JSON.stringify(savedData));
 });
 
 var loadButton = document.querySelector('.backup-menu .load');
 loadButton.addEventListener("click", function() {
-  alert('load');
+  var loadedData = prompt("Paste your string here", "");
+  if (loadedData == null || loadedData == "") {
+    alert("No data was loaded.");
+  } else {
+    var notes = JSON.parse(loadedData);
+    // clearing board
+    document.querySelector('section.board').innerHTML = '';
+    // ading loaded data
+    notesToBoard();
+  } 
 });
