@@ -104,7 +104,9 @@ function keyup(event){
   var keyCode = event.which;
   //console.log(keyCode);
   if (keyCode==13) {
-    //console.log('enter!');
+    // Faking some line breaks
+    document.execCommand('insertHTML', false, '<br>');
+    return false;
   }
   
   checkAndDeleteEmptyNotes();
