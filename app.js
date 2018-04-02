@@ -33,8 +33,6 @@ function createNote(text) {
   // Element
   var wrapper = document.createElement('div');
   wrapper.className = "note";
-  text = text.replace('<div>', '');
-  text = text.replace('</div>', '');
   wrapper.innerHTML = template.replace('{{ note_content }}', text);
   return wrapper;
 }
@@ -71,7 +69,7 @@ notesToBoard();
 var savedData = [];
 setInterval(function() {
   var notesData = [];
-  var divs = document.querySelectorAll("div.note");
+  var divs = document.querySelectorAll(".note");
   for (var i = 0; i < divs.length; i++) {
     var currentDiv = divs[i];
     notesData.unshift(currentDiv.firstChild.innerHTML)
@@ -104,9 +102,7 @@ function keyup(event){
   var keyCode = event.which;
   //console.log(keyCode);
   if (keyCode==13) {
-    // Faking some line breaks
-    document.execCommand('insertHTML', false, '<br>');
-    return false;
+    // Enter
   }
   
   checkAndDeleteEmptyNotes();

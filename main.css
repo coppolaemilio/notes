@@ -95,4 +95,5 @@ nav.main .material-icons {
   margin: 0;
   padding: 10px 15px;
   outline: none;
+  display: inline-block;
 }
