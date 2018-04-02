@@ -5,7 +5,7 @@ body {
   margin: 0;
   background-color: #F9FAFD;
   font-family: 'Open Sans', sans-serif;
-  font-size: 14px;
+  font-size: 15px;
 }
 section.board {
   display: grid;
@@ -56,10 +56,11 @@ nav.main .material-icons {
   top: -76px;
   box-shadow: 0 0 10px black;
   z-index: 9;
+  box-sizing: border-box;
   transition: ease-in-out 0.2s all;
 }
 .backup-menu.open {
-  top: 54px;
+  top: 53px;
 }
 
 .container {

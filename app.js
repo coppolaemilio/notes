@@ -70,7 +70,7 @@ setInterval(function() {
     var currentDiv = divs[i];
     notesData.unshift(currentDiv.firstChild.innerHTML)
   }
-  console.log(notesData);
+  //console.log(notesData);
   localStorage.setItem('notesData', JSON.stringify(notesData));
 }, 1000);
 
@@ -95,9 +95,9 @@ function checkAndDeleteEmptyNotes(){
 document.onkeyup = keyup;
 function keyup(event){
   var keyCode = event.which;
-  console.log(keyCode);
+  //console.log(keyCode);
   if (keyCode==13) {
-    console.log('enter!');
+    //console.log('enter!');
   }
   
   checkAndDeleteEmptyNotes();
@@ -122,4 +122,14 @@ function keyup(event){
 var menuIcon = document.querySelector('nav.main i.menu');
 menuIcon.addEventListener("click", function() {
   document.querySelector('.backup-menu').classList.toggle('open');
+});
+
+var saveButton = document.querySelector('.backup-menu .save');
+saveButton.addEventListener("click", function() {
+  alert('save');
+});
+
+var loadButton = document.querySelector('.backup-menu .load');
+loadButton.addEventListener("click", function() {
+  alert('load');
 });
