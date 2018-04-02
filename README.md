@@ -8,7 +8,6 @@ Still a lot of things to do but it is super cool to see it in action.
 
 - Show "add to home screen" button if visiting from a browser
 - Double line breaks creates an uneditable note in mobile
-- Export/import data
 - Close menu on blur
 - Order notes
 - sync notes
