@@ -5,7 +5,7 @@ body {
   margin: 0;
   background-color: #F9FAFD;
   font-family: 'Open Sans', sans-serif;
-  font-size: 15px;
+  font-size: 16px;
 }
 section.board {
   display: grid;
@@ -75,7 +75,7 @@ nav.main .material-icons {
     width: 100%;
     border: 0;
     font-family: 'Open Sans', sans-serif;
-    font-size: 14px;
+    font-size: 16px;
     padding: 10px 15px;
     outline: none;
     transition: all 0.2s ease-in-out;
