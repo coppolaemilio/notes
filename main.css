@@ -12,30 +12,63 @@ section.board {
   grid-column-gap: 10px;
   grid-row-gap: 10px;
   padding: 10px;
+  box-sizing: border-box;
+  /* Desktop */
+  max-width: 800px;
+  margin: 0 auto;
 }
 
 nav.main {
-  text-align: center;
+  text-align: left;
   padding: 13px;
-  background-color: #ffd660;
+  background-color: #ffca33;
   box-shadow: 0 0 10px #a7a7a7;
   margin-bottom: 10px;
-  color: white;
+  color: #0f0f0f;
   font-weight: 400;
   font-size: 20px;
+  z-index: 10;
+  position: relative;
+}
+nav.main .content {
+  padding: 0 10px;
+  box-sizing: border-box;
+  /* Desktop */
+  max-width: 800px;
+  margin: 0 auto;
 }
 
 nav.main .material-icons {
   position: absolute;
-  left: 10px;
-  top: 14px;
-  opacity: 0;
+  right: 21px;
+  top: 17px;
+  font-size: 24px;
+  opacity: 0.5;
+  cursor: pointer;
+}
+
+.backup-menu {
+  position: absolute;
+  background: white;
+  width: 100%;
+  padding: 0 24px;
+  left: 0;
+  top: -76px;
+  box-shadow: 0 0 10px black;
+  z-index: 9;
+  transition: ease-in-out 0.2s all;
+}
+.backup-menu.open {
+  top: 54px;
 }
 
 .container {
   width: 100%;
   padding: 0 10px;
   box-sizing: border-box;
+  /* Desktop */
+  max-width: 800px;
+  margin: 0 auto;
   }
   .container .new-note {
     width: 100%;

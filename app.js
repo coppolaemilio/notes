@@ -116,3 +116,10 @@ function keyup(event){
     placeCaretAtEnd(element);
   }
 }
+
+
+// Menu
+var menuIcon = document.querySelector('nav.main i.menu');
+menuIcon.addEventListener("click", function() {
+  document.querySelector('.backup-menu').classList.toggle('open');
+});
