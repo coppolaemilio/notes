@@ -64,6 +64,9 @@ function notesToBoard(){
 // Adding them on load
 notesToBoard();
 
+// If there are notes loaded hide the tutorial
+updateTutorialDisplay();
+
 
 // Saving data
 var savedData = [];
@@ -74,12 +77,12 @@ setInterval(function() {
     var currentDiv = divs[i];
     notesData.unshift(currentDiv.firstChild.innerHTML)
   }
+
   //console.log(notesData);
+
   savedData = notesData;
   localStorage.setItem('notesData', JSON.stringify(notesData));
 }, 1000);
-
-
 
 // Removing note
 function checkAndDeleteEmptyNotes(){
@@ -88,11 +91,22 @@ function checkAndDeleteEmptyNotes(){
     var currentDiv = divs[i];
     var parsedText = stripHtml(currentDiv.firstChild.innerHTML);
 
-    if (parsedText === '' || parsedText === '<br>' ) {
+    if (parsedText === '' || currentDiv.firstChild.innerHTML === '<br>' ) {
       if (currentDiv.firstChild !== document.activeElement) {
         currentDiv.parentElement.removeChild(currentDiv);
       }
     }
+  }
+  
+  updateTutorialDisplay();
+}
+
+// Update tutorial display
+function updateTutorialDisplay() {
+  if (document.querySelector('.board').childElementCount) {
+    document.querySelector('.no-notes').classList.remove('show');
+  } else {
+    document.querySelector('.no-notes').classList.add('show');
   }
 }
 
@@ -108,7 +122,7 @@ function keyup(event){
   checkAndDeleteEmptyNotes();
 }
 
-// Material icon new note button
+// New note button
 var noteIcon = document.querySelector('.button-new-note');
 noteIcon.addEventListener("click", function() {
   var randomClass = randId();
@@ -116,6 +130,9 @@ noteIcon.addEventListener("click", function() {
   note.className += ' ' + randomClass;
   var board = document.querySelector(".board");
   board.insertBefore(note, board.firstChild);
+
+  // Hiding tutorial
+  updateTutorialDisplay();
 
   var element = document.querySelector('.' + randomClass + ' p');
   placeCaretAtEnd(element);
