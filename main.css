@@ -3,7 +3,7 @@
 body {
   padding: 0;
   margin: 0;
-  background-color: #F9FAFD;
+  background-color: #F7F7F7;
   font-family: 'Open Sans', sans-serif;
   font-size: 16px;
 }
@@ -21,8 +21,8 @@ section.board {
 nav.main {
   text-align: left;
   padding: 13px;
-  background-color: #ffca33;
-  box-shadow: 0 0 10px #a7a7a7;
+  background-color: #ffffff;
+  box-shadow: 0 1px 1px #D8D8D8;
   margin-bottom: 10px;
   color: #0f0f0f;
   font-weight: 400;
@@ -43,8 +43,9 @@ nav.main .material-icons {
   right: 21px;
   top: 17px;
   font-size: 24px;
-  opacity: 0.5;
+  opacity: 1;
   cursor: pointer;
+  color: #4A90E2;
 }
 
 .backup-menu {
@@ -70,25 +71,13 @@ nav.main .material-icons {
   /* Desktop */
   max-width: 800px;
   margin: 0 auto;
-  }
-  .container .new-note {
-    width: 100%;
-    border: 0;
-    font-family: 'Open Sans', sans-serif;
-    font-size: 16px;
-    padding: 10px 15px;
-    outline: none;
-    transition: all 0.2s ease-in-out;
-}
-.new-note:focus {
-  box-shadow: 2px 6px 22px rgba(0,0,0,0.1);
 }
 
 .note {
   display: inline-block;
   width: 100%;
   box-sizing: border-box;
-  background: #fff6af;
+  background: white;
   overflow: hidden;
 }
 .note p{
@@ -96,4 +85,25 @@ nav.main .material-icons {
   padding: 10px 15px;
   outline: none;
   display: inline-block;
+  min-height: 23px;
+}
+
+.button-new-note {
+  display: inline-block;
+  position: fixed;
+  bottom: 30px;
+  right: 20px;
+  background-color: #4A90E2;
+  color: white;
+  border-radius: 100%;
+  box-shadow: 0 8px 8px rgba(0,0,0,.24);
+  width: 56px;
+  height: 56px;
+  cursor: pointer;
+}
+.button-new-note i.material-icons {
+  position: relative;
+  left: 17px;
+  top: 15px;
+  font-size: 24px;
 }

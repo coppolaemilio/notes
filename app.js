@@ -106,22 +106,20 @@ function keyup(event){
   }
   
   checkAndDeleteEmptyNotes();
-
-  // Creating note
-  var newNoteInput = document.querySelector('.new-note');
-  if (newNoteInput.value != '') {
-    var randomClass = randId();
-    var note = createNote(newNoteInput.value);
-    note.className += ' ' + randomClass;
-    var board = document.querySelector(".board");
-    newNoteInput.value = '';
-    board.insertBefore(note, board.firstChild);
-
-    var element = document.querySelector('.' + randomClass + ' p');
-    placeCaretAtEnd(element);
-  }
 }
 
+// Material icon new note button
+var noteIcon = document.querySelector('.button-new-note');
+noteIcon.addEventListener("click", function() {
+  var randomClass = randId();
+  var note = createNote('');
+  note.className += ' ' + randomClass;
+  var board = document.querySelector(".board");
+  board.insertBefore(note, board.firstChild);
+
+  var element = document.querySelector('.' + randomClass + ' p');
+  placeCaretAtEnd(element);
+});
 
 // Menu
 var menuIcon = document.querySelector('nav.main i.menu');
