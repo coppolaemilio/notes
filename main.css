@@ -133,7 +133,7 @@ nav.main .material-icons {
 .button-new-note {
   display: inline-block;
   position: fixed;
-  bottom: 30px;
+  bottom: 20px;
   right: 20px;
   background-color: #4A90E2;
   color: white;
