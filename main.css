@@ -10,8 +10,7 @@ body {
 section.board {
   display: grid;
   grid-column-gap: 10px;
-  grid-row-gap: 10px;
-  padding: 10px;
+  grid-row-gap: 2px;
   box-sizing: border-box;
   /* Desktop */
   max-width: 800px;
@@ -22,8 +21,7 @@ nav.main {
   text-align: left;
   padding: 15px 13px;
   background-color: #ffffff;
-  box-shadow: 0 1px 1px #D8D8D8;
-  margin-bottom: 10px;
+  margin-bottom: 2px;
   color: #1A1F1C;
   font-weight: 300;
   font-size: 18px;
@@ -85,10 +83,11 @@ nav.main .material-icons {
 }
 .note p{
   margin: 0;
-  padding: 10px 15px;
+  padding: 24px 24px;
   outline: none;
   display: inline-block;
   min-height: 23px;
+  color: #3E4151;
 }
 
 .no-notes {
@@ -148,4 +147,15 @@ nav.main .material-icons {
   left: 17px;
   top: 15px;
   font-size: 24px;
+}
+
+
+::-moz-selection { /* Code for Firefox */
+  color: white;
+  background: #4A90E2;
+}
+
+::selection {
+  color: white;
+  background: #4A90E2;
 }
