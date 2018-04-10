@@ -23,12 +23,20 @@ nav.main {
   background-color: #ffffff;
   margin-bottom: 2px;
   color: #1A1F1C;
-  font-weight: 300;
-  font-size: 18px;
   z-index: 10;
   position: relative;
+  height: 23px;
 }
-nav.main span {
+nav.main h1 {
+  font-size: 18px;
+  font-weight: 300;
+  padding: 0;
+  margin: 0;
+  position: absolute;
+  left: 21px;
+  top: 15px;
+}
+nav.main h1 span {
   font-weight: bold;
 }
 nav.main .content {
