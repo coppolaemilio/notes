@@ -93,14 +93,13 @@ nav.main .material-icons.list {
   box-sizing: border-box;
   background: white;
   overflow: hidden;
-  position: relative;
 }
 .note p{
   margin: 0;
   padding: 24px 24px;
   outline: none;
   display: inline-block;
-  min-height: 23px;
+  min-height: 68px;
   color: #3E4151;
   min-width: 100%;
   box-sizing: border-box;
@@ -108,6 +107,7 @@ nav.main .material-icons.list {
 
 .note .list-item {
   padding-left: 30px;
+  position: relative;
 }
 
 .note .list-item .checkbox-blank, 

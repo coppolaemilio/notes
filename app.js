@@ -37,17 +37,17 @@ function createNote(text = '') {
 
   // Element
   var wrapper = document.createElement('div');
-  wrapper.className = "note";
+  wrapper.className = 'note text';
   wrapper.appendChild(textField);
   return wrapper;
 }
 
-function createList(checkbox = false, text = '') {
+function createList(checkbox = 'todo', text = '') {
   var listItem = document.createElement('div');
   listItem.className = 'list-item';
 
   var checkbox = document.createElement('i');
-  if (checkbox) {
+  if (checkbox === 'todo') {
     checkbox.className = 'material-icons checkbox-blank';
     checkbox.innerHTML = 'check_box_outline_blank';
   } else {
@@ -67,7 +67,7 @@ function createList(checkbox = false, text = '') {
 
   // Creating note and adding the first list Item
   var wrapper = document.createElement('div');
-  wrapper.className = "note";
+  wrapper.className = 'note list';
   wrapper.appendChild(listItem);
   return wrapper;
 }
@@ -90,7 +90,9 @@ function notesToBoard(){
     if (notes[i] !== '') {
       if (notes[i][0] == 'text') {
         var note = createNote(notes[i][1]);
-      } else {
+      }
+      if (notes[i][0] == 'list') {
+        console.log('loaded' + notes[i][1][0])
         var note = createList(notes[i][1][0], notes[i][1][1]);
       }
       
@@ -106,7 +108,6 @@ notesToBoard();
 // If there are notes loaded hide the tutorial
 updateTutorialDisplay();
 
-
 // Saving data
 var savedData = [];
 setInterval(function() {
@@ -115,16 +116,29 @@ setInterval(function() {
   for (var i = 0; i < divs.length; i++) {
     var currentDiv = divs[i];
     if (currentDiv.classList.contains('list')) {
-      notesData.unshift(['list', currentDiv.firstChild.innerHTML])
+      var listData = currentDiv.firstChild;
+
+      if (listData.children[0].classList[1] === 'checkbox-blank') {
+        var checkbox = 'blank';
+      } else {
+        var checkbox = 'done';
+      }
+      console.log(checkbox);
+      var text = listData.children[1].innerHTML;
+      notesData.unshift(['list', [checkbox, text]])
     } else {
       notesData.unshift(['text', currentDiv.firstChild.innerHTML]);
     }
   }
 
-  console.log(notesData);
 
-  savedData = notesData;
-  localStorage.setItem('notesData', JSON.stringify(notesData));
+  // Check for changes on the db
+  if (notesData != savedData) { 
+    //console.log('Changes detexted. Saving.')
+    console.log(notesData);
+    savedData = notesData;
+    localStorage.setItem('notesData', JSON.stringify(notesData));
+  }
 }, 1000);
 
 // Removing note
@@ -229,5 +243,4 @@ function checkboxToggle(event) {
     event.target.innerHTML = 'check_box';
     event.target.className = 'material-icons checkbox'
   }
-  console.log(event.target);
 }
