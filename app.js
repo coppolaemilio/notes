@@ -42,7 +42,7 @@ function createNote(text = '') {
   return wrapper;
 }
 
-function createList(checkbox = 'todo', text = '') {
+function createList(checkbox = 'blank', text = '') {
   var listItem = document.createElement('div');
   listItem.className = 'list-item';
 
@@ -146,9 +146,15 @@ function checkAndDeleteEmptyNotes(){
   var divs = document.querySelectorAll("div.note");
   for (var i = 0; i < divs.length; i++){
     var currentDiv = divs[i];
-    var parsedText = stripHtml(currentDiv.firstChild.innerHTML);
 
-    if (parsedText === '' || currentDiv.firstChild.innerHTML === '<br>' ) {
+    if (currentDiv.classList.contains('list')) {
+      var listData = currentDiv.firstChild;
+      var parsedText = stripHtml(listData.children[1].innerHTML);
+    } else { // text
+      var parsedText = stripHtml(currentDiv.firstChild.innerHTML);
+    }
+
+    if (parsedText === '' || parsedText === '<br>' ) {
       if (currentDiv.firstChild !== document.activeElement) {
         currentDiv.parentElement.removeChild(currentDiv);
       }
