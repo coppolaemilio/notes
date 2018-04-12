@@ -27,13 +27,48 @@ function placeCaretAtEnd(el) {
 }
 
 
-function createNote(text) {
+function createNote(text = '') {
   // Template
-  var template = '<p contenteditable="true" spellcheck="false" onblur="checkAndDeleteEmptyNotes()">{{ note_content }}</p>';
+  var textField = document.createElement('p');
+  textField.setAttribute('contenteditable', 'true');
+  textField.setAttribute('spellcheck', 'false');
+  textField.setAttribute('onblur', 'checkAndDeleteEmptyNotes()');
+  textField.innerHTML = text
+
   // Element
   var wrapper = document.createElement('div');
   wrapper.className = "note";
-  wrapper.innerHTML = template.replace('{{ note_content }}', text);
+  wrapper.appendChild(textField);
+  return wrapper;
+}
+
+function createList(checkbox = false, text = '') {
+  var listItem = document.createElement('div');
+  listItem.className = 'list-item';
+
+  var checkbox = document.createElement('i');
+  if (checkbox) {
+    checkbox.className = 'material-icons checkbox-blank';
+    checkbox.innerHTML = 'check_box_outline_blank';
+  } else {
+    checkbox.className = 'material-icons checkbox';
+    checkbox.innerHTML = 'check_box';
+  }
+  checkbox.addEventListener("click", checkboxToggle);
+  listItem.appendChild(checkbox);
+
+  // Adding it to the list item
+  var textField = document.createElement('p');
+  textField.setAttribute('contenteditable', 'true');
+  textField.setAttribute('spellcheck', 'false');
+  textField.setAttribute('onblur', 'checkAndDeleteEmptyNotes()');
+  textField.innerHTML = text
+  listItem.appendChild(textField);
+
+  // Creating note and adding the first list Item
+  var wrapper = document.createElement('div');
+  wrapper.className = "note";
+  wrapper.appendChild(listItem);
   return wrapper;
 }
 
@@ -53,7 +88,11 @@ if (localStorage.getItem('notesData') !== null) {
 function notesToBoard(){
   for (i = 0; i < notes.length; i++) {
     if (notes[i] !== '') {
-      var note = createNote(notes[i]);
+      if (notes[i][0] == 'text') {
+        var note = createNote(notes[i][1]);
+      } else {
+        var note = createList(notes[i][1][0], notes[i][1][1]);
+      }
       
       // Adding the notes to the board
       var board = document.querySelector(".board");
@@ -75,10 +114,14 @@ setInterval(function() {
   var divs = document.querySelectorAll(".note");
   for (var i = 0; i < divs.length; i++) {
     var currentDiv = divs[i];
-    notesData.unshift(currentDiv.firstChild.innerHTML)
+    if (currentDiv.classList.contains('list')) {
+      notesData.unshift(['list', currentDiv.firstChild.innerHTML])
+    } else {
+      notesData.unshift(['text', currentDiv.firstChild.innerHTML]);
+    }
   }
 
-  //console.log(notesData);
+  console.log(notesData);
 
   savedData = notesData;
   localStorage.setItem('notesData', JSON.stringify(notesData));
@@ -123,10 +166,13 @@ function keyup(event){
 }
 
 // New note button
-var noteIcon = document.querySelector('.button-new-note');
-noteIcon.addEventListener("click", function() {
+function createAndAddNote(noteType = 'text'){
   var randomClass = randId();
-  var note = createNote('');
+  if (noteType === 'text') {
+    var note = createNote();
+  } else {
+    var note = createList();
+  }
   note.className += ' ' + randomClass;
   var board = document.querySelector(".board");
   board.insertBefore(note, board.firstChild);
@@ -136,6 +182,11 @@ noteIcon.addEventListener("click", function() {
 
   var element = document.querySelector('.' + randomClass + ' p');
   placeCaretAtEnd(element);
+}
+
+var noteIcon = document.querySelector('.button-new-note');
+noteIcon.addEventListener("click", function() {
+  createAndAddNote('text');
 });
 
 // Menu
@@ -162,3 +213,21 @@ loadButton.addEventListener("click", function() {
     notesToBoard();
   } 
 });
+
+// Checkbox
+
+var listButton = document.querySelector('nav .list');
+listButton.addEventListener("click", function() {
+  createAndAddNote('list');
+});
+
+function checkboxToggle(event) {
+  if (event.target.innerHTML === 'check_box') {
+    event.target.innerHTML = 'check_box_outline_blank';
+    event.target.className = 'material-icons checkbox-blank'
+  } else {
+    event.target.innerHTML = 'check_box';
+    event.target.className = 'material-icons checkbox'
+  }
+  console.log(event.target);
+}

@@ -57,6 +57,11 @@ nav.main .material-icons {
   color: #4A90E2;
 }
 
+nav.main .material-icons.list {
+  right: 61px;
+  color: #50E3C2;
+}
+
 .backup-menu {
   position: absolute;
   background: white;
@@ -88,6 +93,7 @@ nav.main .material-icons {
   box-sizing: border-box;
   background: white;
   overflow: hidden;
+  position: relative;
 }
 .note p{
   margin: 0;
@@ -96,6 +102,24 @@ nav.main .material-icons {
   display: inline-block;
   min-height: 23px;
   color: #3E4151;
+  min-width: 100%;
+  box-sizing: border-box;
+}
+
+.note .list-item {
+  padding-left: 30px;
+}
+
+.note .list-item .checkbox-blank, 
+.note .list-item .checkbox {
+  position: absolute;
+  left: 20px;
+  top: 22px;
+  color: #3E4151;
+  cursor: pointer;
+}
+.note .list-item .checkbox {
+  color: #3E415166;
 }
 
 .no-notes {
