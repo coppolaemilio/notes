@@ -173,6 +173,7 @@ nav.main .material-icons.list {
   width: 56px;
   height: 56px;
   cursor: pointer;
+  z-index: 1000;
 }
 .button-new-note i.material-icons {
   position: relative;
