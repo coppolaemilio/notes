@@ -46,16 +46,16 @@ function createList(checkbox = 'todo', text = '') {
   var listItem = document.createElement('div');
   listItem.className = 'list-item';
 
-  var checkbox = document.createElement('i');
-  if (checkbox === 'todo') {
-    checkbox.className = 'material-icons checkbox-blank';
-    checkbox.innerHTML = 'check_box_outline_blank';
+  var checkboxElement = document.createElement('i');
+  if (checkbox === 'blank') {
+    checkboxElement.className = 'material-icons checkbox-blank';
+    checkboxElement.innerHTML = 'check_box_outline_blank';
   } else {
-    checkbox.className = 'material-icons checkbox';
-    checkbox.innerHTML = 'check_box';
+    checkboxElement.className = 'material-icons checkbox';
+    checkboxElement.innerHTML = 'check_box';
   }
-  checkbox.addEventListener("click", checkboxToggle);
-  listItem.appendChild(checkbox);
+  checkboxElement.addEventListener("click", checkboxToggle);
+  listItem.appendChild(checkboxElement);
 
   // Adding it to the list item
   var textField = document.createElement('p');
