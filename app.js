@@ -26,7 +26,7 @@ function placeCaretAtEnd(el) {
   }
 }
 
-
+// Notes
 function createNote(text = '') {
   // Template
   var textField = document.createElement('p');
@@ -42,17 +42,18 @@ function createNote(text = '') {
   return wrapper;
 }
 
-function createList(checkbox = 'blank', text = '') {
+function createList(checkbox = 'blank', text = '', itemOnly = false) {
   var listItem = document.createElement('div');
-  listItem.className = 'list-item';
 
   var checkboxElement = document.createElement('i');
   if (checkbox === 'blank') {
     checkboxElement.className = 'material-icons checkbox-blank';
     checkboxElement.innerHTML = 'check_box_outline_blank';
+    listItem.className = 'list-item';
   } else {
     checkboxElement.className = 'material-icons checkbox';
     checkboxElement.innerHTML = 'check_box';
+    listItem.className = 'list-item done';
   }
   checkboxElement.addEventListener("click", checkboxToggle);
   listItem.appendChild(checkboxElement);
@@ -65,71 +66,79 @@ function createList(checkbox = 'blank', text = '') {
   textField.innerHTML = text
   listItem.appendChild(textField);
 
-  // Creating note and adding the first list Item
+  if (itemOnly) {
+    // Returning the list item only
+    return listItem;
+  } else {
+    // Creating note and adding the first list Item
+    var wrapper = document.createElement('div');
+    wrapper.className = 'note list';
+    wrapper.appendChild(listItem);
+    return wrapper;
+  }
+}
+
+function loadList(listItems) {
   var wrapper = document.createElement('div');
   wrapper.className = 'note list';
-  wrapper.appendChild(listItem);
+  listItems.forEach((listItem) => {
+    wrapper.insertBefore(
+      createList(listItem[0], listItem[1], true),
+      wrapper.firstChild
+    );
+  });
   return wrapper;
 }
 
-// Loading data
-var notes = [];
-if (localStorage.getItem('notesData') !== null) {
-  try {
-    var notes = JSON.parse(localStorage.getItem('notesData'));
-  }
-  catch(err) {
-    alert('Data corrupted.');
-    var notes = [];
-  }
-}
-
 // Creating the html for the notes
-function notesToBoard(){
-  for (i = 0; i < notes.length; i++) {
-    if (notes[i] !== '') {
-      if (notes[i][0] == 'text') {
-        var note = createNote(notes[i][1]);
-      }
-      if (notes[i][0] == 'list') {
-        console.log('loaded' + notes[i][1][0])
-        var note = createList(notes[i][1][0], notes[i][1][1]);
-      }
-      
-      // Adding the notes to the board
+function notesToBoard() {
+  notes.forEach( (note) => {
+    if (note !== '') {
       var board = document.querySelector(".board");
-      board.insertBefore(note, board.firstChild);
+      if (note[0] == 'text') {
+        board.insertBefore(
+          createNote(note[1]),
+          board.firstChild
+        );
+      } else if (note[0] == 'list') {
+        board.insertBefore(
+          loadList(note[1]),
+          //createList(note[1][0], note[1][1]),
+          board.firstChild
+        );
+      }
     }
-  }
+  });
 }
-// Adding them on load
-notesToBoard();
 
-// If there are notes loaded hide the tutorial
-updateTutorialDisplay();
 
 // Saving data
 var savedData = [];
 setInterval(function() {
   var notesData = [];
-  var divs = document.querySelectorAll(".note");
-  for (var i = 0; i < divs.length; i++) {
-    var currentDiv = divs[i];
-    if (currentDiv.classList.contains('list')) {
-      var listData = currentDiv.firstChild;
+  
+  document.querySelectorAll(".note").forEach( (note) => {
+    if (note.classList.contains('list')) {
+      // Saving list items
+      var listItemsData = [];
+      note.childNodes.forEach((listItem) => {
+        var listData = listItem;
+        if (listData.children[0].classList[1] === 'checkbox-blank') {
+          var checkbox = 'blank';
+        } else {
+          var checkbox = 'done';
+        }
+        var text = listData.children[1].innerHTML;
 
-      if (listData.children[0].classList[1] === 'checkbox-blank') {
-        var checkbox = 'blank';
-      } else {
-        var checkbox = 'done';
-      }
-      console.log(checkbox);
-      var text = listData.children[1].innerHTML;
-      notesData.unshift(['list', [checkbox, text]])
+        // Adding list item to the todo-list
+        listItemsData.unshift([checkbox, text]);
+      });
+
+      notesData.unshift(['list', listItemsData])
     } else {
-      notesData.unshift(['text', currentDiv.firstChild.innerHTML]);
+      notesData.unshift(['text', note.firstChild.innerHTML]);
     }
-  }
+  });
 
 
   // Check for changes on the db
@@ -173,15 +182,33 @@ function updateTutorialDisplay() {
   }
 }
 
-// Key up event and updates
+// Key events and updates
 document.onkeyup = keyup;
+document.onkeydown = keydown;
+function keydown(event){
+  var keyCode = event.which;
+  if (keyCode==8) { // Delete
+    if (document.activeElement.parentElement.classList.contains('list-item')) {
+      if (document.activeElement.innerHTML === '' || document.activeElement.innerHTML === '<br>') {
+        //TODO move caret at previous list element
+        document.activeElement.parentElement.remove();
+        event.preventDefault();
+        return false;
+      }
+    }
+  }
+  if (keyCode==13) { // Enter
+    if (document.activeElement.parentElement.classList.contains('list-item')) {
+      var newElement = document.activeElement.parentElement.parentElement.appendChild(createList(checkbox = 'blank', text = '', true));
+      placeCaretAtEnd(newElement.children[1]);
+      // Avoid enter being added
+      event.preventDefault();
+      return false;
+    }
+  }
+}
 function keyup(event){
   var keyCode = event.which;
-  //console.log(keyCode);
-  if (keyCode==13) {
-    // Enter
-  }
-  
   checkAndDeleteEmptyNotes();
 }
 
@@ -204,24 +231,21 @@ function createAndAddNote(noteType = 'text'){
   placeCaretAtEnd(element);
 }
 
-var noteIcon = document.querySelector('.button-new-note');
-noteIcon.addEventListener("click", function() {
+
+// Button inputs ------------------------
+document.querySelector('.button-new-note').addEventListener("click", () => {
   createAndAddNote('text');
 });
-
 // Menu
-var menuIcon = document.querySelector('nav.main i.menu');
-menuIcon.addEventListener("click", function() {
+document.querySelector('nav.main i.menu').addEventListener("click", () => {
   document.querySelector('.backup-menu').classList.toggle('open');
 });
-
-var saveButton = document.querySelector('.backup-menu .save');
-saveButton.addEventListener("click", function() {
+// Save
+document.querySelector('.backup-menu .save').addEventListener("click", () => {
   alert(JSON.stringify(savedData));
 });
-
-var loadButton = document.querySelector('.backup-menu .load');
-loadButton.addEventListener("click", function() {
+// Load
+document.querySelector('.backup-menu .load').addEventListener("click", () => {
   var loadedData = prompt("Paste your string here", "");
   if (loadedData == null || loadedData == "") {
     alert("No data was loaded.");
@@ -234,10 +258,9 @@ loadButton.addEventListener("click", function() {
   } 
 });
 
-// Checkbox
 
-var listButton = document.querySelector('nav .list');
-listButton.addEventListener("click", function() {
+// Checkbox -----------------------------
+document.querySelector('nav .list').addEventListener("click", () => {
   createAndAddNote('list');
 });
 
@@ -245,8 +268,25 @@ function checkboxToggle(event) {
   if (event.target.innerHTML === 'check_box') {
     event.target.innerHTML = 'check_box_outline_blank';
     event.target.className = 'material-icons checkbox-blank'
+    event.target.parentElement.className = 'list-item';
   } else {
     event.target.innerHTML = 'check_box';
     event.target.className = 'material-icons checkbox'
+    event.target.parentElement.className = 'list-item done';
   }
 }
+
+
+// Init ---------------
+var notes = [];
+// Loading data
+if (localStorage.getItem('notesData') !== null) {
+  try {
+    var notes = JSON.parse(localStorage.getItem('notesData'));
+  }
+  catch(err) {
+    alert('Data corrupted.');
+  }
+}
+notesToBoard();
+updateTutorialDisplay();

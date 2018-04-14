@@ -111,6 +111,13 @@ nav.main .material-icons.list {
 .note .list-item {
   padding-left: 30px;
   position: relative;
+  margin-bottom: -25px;
+}
+.note .list-item:last-of-type {
+  margin-bottom: 0;
+}
+.note .list-item:only-child {
+  margin-bottom: 0;
 }
 
 .note .list-item .checkbox-blank, 
@@ -121,8 +128,13 @@ nav.main .material-icons.list {
   color: #3E4151;
   cursor: pointer;
 }
-.note .list-item .checkbox {
+
+.note .list-item.done .checkbox,
+.note .list-item.done p{
   color: #3E415166;
+}
+.note .list-item.done p {
+  text-decoration: line-through;
 }
 
 .no-notes {

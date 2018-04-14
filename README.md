@@ -1,11 +1,13 @@
-# Notes
+# Notes v1.0
 This repo is an experiment for understanding how PWA (Progressive Web Applications) work.
 
 Still a lot of things to do but it is super cool to see it in action.
 
 
+
 ## Todo:
 
+- Moving done list to bottom of list
 - Show "add to home screen" button if visiting from a browser
 - Close menu on blur
 - Order notes
