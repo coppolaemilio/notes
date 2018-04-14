@@ -144,7 +144,6 @@ setInterval(function() {
   // Check for changes on the db
   if (notesData != savedData) { 
     //console.log('Changes detexted. Saving.')
-    console.log(notesData);
     savedData = notesData;
     localStorage.setItem('notesData', JSON.stringify(notesData));
   }
@@ -265,14 +264,20 @@ document.querySelector('nav .list').addEventListener("click", () => {
 });
 
 function checkboxToggle(event) {
+  var listElement = event.target.parentElement;
+  var noteElement = listElement.parentElement;
   if (event.target.innerHTML === 'check_box') {
     event.target.innerHTML = 'check_box_outline_blank';
     event.target.className = 'material-icons checkbox-blank'
     event.target.parentElement.className = 'list-item';
+    // move to top
+    noteElement.insertBefore(listElement, noteElement.firstChild);
   } else {
     event.target.innerHTML = 'check_box';
     event.target.className = 'material-icons checkbox'
     event.target.parentElement.className = 'list-item done';
+    // move to bottom
+    noteElement.appendChild(listElement);
   }
 }
 
