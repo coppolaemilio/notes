@@ -157,7 +157,10 @@ function checkAndDeleteEmptyNotes(){
 
     if (currentDiv.classList.contains('list')) {
       var listData = currentDiv.firstChild;
-      var parsedText = stripHtml(listData.children[1].innerHTML);
+      if (listData != null){
+        var parsedText = stripHtml(listData.children[1].innerHTML)
+      ;
+      }
     } else { // text
       var parsedText = stripHtml(currentDiv.firstChild.innerHTML);
     }
