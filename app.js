@@ -1,6 +1,6 @@
 // Functions
 function stripHtml(html) {
-  var tmp = document.createElement("DIV");
+  let tmp = document.createElement("DIV");
   tmp.innerHTML = html;
   return tmp.textContent || tmp.innerText || "";
 }
@@ -12,14 +12,14 @@ function placeCaretAtEnd(el) {
   el.focus();
   if (typeof window.getSelection != "undefined"
           && typeof document.createRange != "undefined") {
-      var range = document.createRange();
+      let range = document.createRange();
       range.selectNodeContents(el);
       range.collapse(false);
-      var sel = window.getSelection();
+      let sel = window.getSelection();
       sel.removeAllRanges();
       sel.addRange(range);
   } else if (typeof document.body.createTextRange != "undefined") {
-      var textRange = document.body.createTextRange();
+      let textRange = document.body.createTextRange();
       textRange.moveToElementText(el);
       textRange.collapse(false);
       textRange.select();
@@ -29,23 +29,23 @@ function placeCaretAtEnd(el) {
 // Notes
 function createNote(text = '') {
   // Template
-  var textField = document.createElement('p');
+  let textField = document.createElement('p');
   textField.setAttribute('contenteditable', 'true');
   textField.setAttribute('spellcheck', 'false');
   textField.setAttribute('onblur', 'checkAndDeleteEmptyNotes()');
   textField.innerHTML = text
 
   // Element
-  var wrapper = document.createElement('div');
+  let wrapper = document.createElement('div');
   wrapper.className = 'note text';
   wrapper.appendChild(textField);
   return wrapper;
 }
 
 function createList(checkbox = 'blank', text = '', itemOnly = false) {
-  var listItem = document.createElement('div');
+  let listItem = document.createElement('div');
 
-  var checkboxElement = document.createElement('i');
+  let checkboxElement = document.createElement('i');
   if (checkbox === 'blank') {
     checkboxElement.className = 'material-icons checkbox-blank';
     checkboxElement.innerHTML = 'check_box_outline_blank';
@@ -59,7 +59,7 @@ function createList(checkbox = 'blank', text = '', itemOnly = false) {
   listItem.appendChild(checkboxElement);
 
   // Adding it to the list item
-  var textField = document.createElement('p');
+  let textField = document.createElement('p');
   textField.setAttribute('contenteditable', 'true');
   textField.setAttribute('spellcheck', 'false');
   textField.setAttribute('onblur', 'checkAndDeleteEmptyNotes()');
@@ -71,7 +71,7 @@ function createList(checkbox = 'blank', text = '', itemOnly = false) {
     return listItem;
   } else {
     // Creating note and adding the first list Item
-    var wrapper = document.createElement('div');
+    let wrapper = document.createElement('div');
     wrapper.className = 'note list';
     wrapper.appendChild(listItem);
     return wrapper;
@@ -79,7 +79,7 @@ function createList(checkbox = 'blank', text = '', itemOnly = false) {
 }
 
 function loadList(listItems) {
-  var wrapper = document.createElement('div');
+  let wrapper = document.createElement('div');
   wrapper.className = 'note list';
   listItems.forEach((listItem) => {
     wrapper.insertBefore(
@@ -94,7 +94,7 @@ function loadList(listItems) {
 function notesToBoard() {
   notes.forEach( (note) => {
     if (note !== '') {
-      var board = document.querySelector(".board");
+      let board = document.querySelector(".board");
       if (note[0] == 'text') {
         board.insertBefore(
           createNote(note[1]),
@@ -115,20 +115,21 @@ function notesToBoard() {
 // Saving data
 var savedData = [];
 setInterval(function() {
-  var notesData = [];
+  let notesData = [];
   
   document.querySelectorAll(".note").forEach( (note) => {
     if (note.classList.contains('list')) {
       // Saving list items
-      var listItemsData = [];
+      let listItemsData = [];
       note.childNodes.forEach((listItem) => {
-        var listData = listItem;
+        let listData = listItem;
+        let checkbox;
         if (listData.children[0].classList[1] === 'checkbox-blank') {
-          var checkbox = 'blank';
+          checkbox = 'blank';
         } else {
-          var checkbox = 'done';
+          checkbox = 'done';
         }
-        var text = listData.children[1].innerHTML;
+        let text = listData.children[1].innerHTML;
 
         // Adding list item to the todo-list
         listItemsData.unshift([checkbox, text]);
@@ -150,19 +151,18 @@ setInterval(function() {
 }, 1000);
 
 // Removing note
-function checkAndDeleteEmptyNotes(){
-  var divs = document.querySelectorAll("div.note");
-  for (var i = 0; i < divs.length; i++){
-    var currentDiv = divs[i];
+function checkAndDeleteEmptyNotes() {
+  document.querySelectorAll("div.note").forEach((divNote) => {
+    let currentDiv = divNote;
+    let parsedText;
 
     if (currentDiv.classList.contains('list')) {
-      var listData = currentDiv.firstChild;
-      if (listData != null){
-        var parsedText = stripHtml(listData.children[1].innerHTML)
+      if (currentDiv.firstChild != null){
+        parsedText = stripHtml(currentDiv.firstChild.children[1].innerHTML)
       ;
       }
     } else { // text
-      var parsedText = stripHtml(currentDiv.firstChild.innerHTML);
+      parsedText = stripHtml(currentDiv.firstChild.innerHTML);
     }
 
     if (parsedText === '' || parsedText === '<br>' ) {
@@ -170,8 +170,7 @@ function checkAndDeleteEmptyNotes(){
         currentDiv.parentElement.removeChild(currentDiv);
       }
     }
-  }
-  
+  });
   updateTutorialDisplay();
 }
 
@@ -188,7 +187,7 @@ function updateTutorialDisplay() {
 document.onkeyup = keyup;
 document.onkeydown = keydown;
 function keydown(event){
-  var keyCode = event.which;
+  let keyCode = event.which;
   if (keyCode==8) { // Delete
     if (document.activeElement.parentElement.classList.contains('list-item')) {
       if (document.activeElement.innerHTML === '' || document.activeElement.innerHTML === '<br>') {
@@ -201,7 +200,7 @@ function keydown(event){
   }
   if (keyCode==13) { // Enter
     if (document.activeElement.parentElement.classList.contains('list-item')) {
-      var newElement = document.activeElement.parentElement.parentElement.appendChild(createList(checkbox = 'blank', text = '', true));
+      let newElement = document.activeElement.parentElement.parentElement.appendChild(createList(checkbox = 'blank', text = '', true));
       placeCaretAtEnd(newElement.children[1]);
       // Avoid enter being added
       event.preventDefault();
@@ -210,26 +209,27 @@ function keydown(event){
   }
 }
 function keyup(event){
-  var keyCode = event.which;
+  let keyCode = event.which;
   checkAndDeleteEmptyNotes();
 }
 
 // New note button
 function createAndAddNote(noteType = 'text'){
-  var randomClass = randId();
+  let randomClass = randId();
+  let note;
   if (noteType === 'text') {
-    var note = createNote();
+    note = createNote();
   } else {
-    var note = createList();
+    note = createList();
   }
   note.className += ' ' + randomClass;
-  var board = document.querySelector(".board");
+  let board = document.querySelector(".board");
   board.insertBefore(note, board.firstChild);
 
   // Hiding tutorial
   updateTutorialDisplay();
 
-  var element = document.querySelector('.' + randomClass + ' p');
+  let element = document.querySelector('.' + randomClass + ' p');
   placeCaretAtEnd(element);
 }
 
@@ -267,8 +267,8 @@ document.querySelector('nav .list').addEventListener("click", () => {
 });
 
 function checkboxToggle(event) {
-  var listElement = event.target.parentElement;
-  var noteElement = listElement.parentElement;
+  let listElement = event.target.parentElement;
+  let noteElement = listElement.parentElement;
   if (event.target.innerHTML === 'check_box') {
     event.target.innerHTML = 'check_box_outline_blank';
     event.target.className = 'material-icons checkbox-blank'
