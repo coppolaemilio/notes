@@ -1,3 +1,5 @@
+const VERSION = '1.0';
+
 // Functions
 function stripHtml(html) {
   let tmp = document.createElement("DIV");
@@ -115,7 +117,7 @@ function notesToBoard() {
 // Saving data
 var savedData = [];
 setInterval(function() {
-  let notesData = [];
+  let notesData = [{version:VERSION}];
   
   document.querySelectorAll(".note").forEach( (note) => {
     if (note.classList.contains('list')) {
@@ -145,8 +147,9 @@ setInterval(function() {
   // Check for changes on the db
   if (notesData != savedData) { 
     //console.log('Changes detexted. Saving.')
-    savedData = notesData;
+    console.log(notesData);
     localStorage.setItem('notesData', JSON.stringify(notesData));
+    savedData = notesData;
   }
 }, 1000);
 
